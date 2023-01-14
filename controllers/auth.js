@@ -14,8 +14,8 @@ const RP_ID = 'localhost'
 
 module.exports.registration = async (req, res) => {
 
-  
-    let user = req.session.user
+  console.log('coming in');
+    let user = await req.session.user
     try {
        const excludeCredentials = [];
        

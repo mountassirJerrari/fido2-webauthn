@@ -33,6 +33,7 @@
       font-size: 130px;
       top: 300px;
       color: #fff;
+      cursor: pointer;
 
     }
   </style>
@@ -49,12 +50,12 @@
   <script type="module">
     import { floatAnimation } from '/animation.js'
     floatAnimation();
-    import { _fetch, authenticate } from '/client.js';
+    import { _fetch, registerCredential } from '/client.js';
     const btn = document.querySelector('.can');
-      btn.addEventListener('click', e => {
-    
-      
-    });
+      btn.addEventListener('click',async e => {
+        const options = await registerCredential()
+        console.log(options);
+         });
   </script>
 </body>
 

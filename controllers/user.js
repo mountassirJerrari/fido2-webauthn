@@ -10,6 +10,7 @@ module.exports.username = async (req , res)=>{
         // Only check username, no need to check dispalyName
         if (!username || !/[a-zA-Z0-9-_]+/.test(username)) {
           res.status(400).send({ error: 'Bad request ,  invalid username' });
+          console.log('error');
           return;
         } else {
            
@@ -27,8 +28,8 @@ module.exports.username = async (req , res)=>{
           // Set username in the session
           req.session.user = user;
           req.session.username = user.username
-          
-          res.json(user.credentials.length);
+          console.log('user stored to the session');
+          res.json(user);
         }
     
 }

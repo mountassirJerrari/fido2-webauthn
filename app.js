@@ -18,14 +18,11 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(session({
   secret: 'secret', // You should specify a real secret here
-  resave: true,
-  saveUninitialized: false,
-  proxy: true,
+  resave: false,
+  saveUninitialized: true,
   store:sessionStore,
-
   cookie:{
-    httpOnly: true,
-    sameSite: 'none'
+    maxAge : 12121212
   }
 }));
 app.set('view engine', 'html');
@@ -38,6 +35,11 @@ app.get('/', (req, res) => {
   res.render('index.html');
 });
 app.use('/auth', authRouter);
+app.get('/test',(req, res) => {
+  user = req.session.user
+  console.log(user);
+  res.json({user});
+});
 
 
 

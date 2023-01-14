@@ -37,7 +37,7 @@ export const registerCredential = async () => {
   };
 
   const options = await _fetch('/auth/registerRequest', opts);
-
+  return options;
   options.user.id = base64url.decode(options.user.id);
   options.challenge = base64url.decode(options.challenge);
 
