@@ -1,4 +1,7 @@
 require('dotenv').config();
+const  base64 = require("base64-arraybuffer")
+const base64url =require('base64url')
+const crypto = require('crypto');
 const express = require('express');
 const app = express();
 const hbs = require('hbs');
@@ -36,9 +39,14 @@ app.get('/', (req, res) => {
 });
 app.use('/auth', authRouter);
 app.get('/test',(req, res) => {
-  user = req.session.user
-  console.log(user);
-  res.json({user});
+
+  const origin =crypto.randomBytes(32)
+  const encoded = base64.encode(origin)
+  const decoded = base64.decode(encoded)
+  const encoded1 = base64.encode(decoded)
+  const decoded1 = base64.decode(encoded)
+  console.log({origin , encoded ,decoded , encoded1 , decoded1});
+  res.json({origin , encoded ,decoded});
 });
 
 

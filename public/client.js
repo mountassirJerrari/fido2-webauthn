@@ -1,3 +1,6 @@
+
+
+ 
 export const _fetch = async (path, payload = '') => {
   const headers = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -37,8 +40,9 @@ export const registerCredential = async () => {
   };
 
   const options = await _fetch('/auth/registerRequest', opts);
-  return options;
-  options.user.id = base64url.decode(options.user.id);
+  
+  options.user.id =base64url.decode(options.user.id);
+  
   options.challenge = base64url.decode(options.challenge);
 
   if (options.excludeCredentials) {
@@ -50,6 +54,8 @@ export const registerCredential = async () => {
   const cred = await navigator.credentials.create({
     publicKey: options
   });
+  console.log(cred)
+  return cred ; 
 
   const credential = {};
   credential.id = cred.id;
@@ -68,6 +74,6 @@ export const registerCredential = async () => {
   }
 
   localStorage.setItem(`credId`, credential.id);
-
+  
   return await _fetch('/auth/registerResponse', credential);
 };

@@ -1,7 +1,8 @@
 
 const crypto = require('crypto');
-const base64url = require('base64url');
+
 const User = require('../models/user');
+const  base64 = require("base64-arraybuffer")
 
 
 module.exports.username = async (req , res)=>{
@@ -19,7 +20,7 @@ module.exports.username = async (req , res)=>{
                 user = {
                 username: username,
                 displayName: displayName,
-                id: base64url.encode(crypto.randomBytes(32)),
+                id: base64.encode(crypto.randomBytes(32)),
                 credentials: []
               }
              

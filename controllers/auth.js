@@ -3,12 +3,12 @@ const { generateRegistrationOptions } = require('@simplewebauthn/server');
 const session = require("express-session")
 const crypto = require('crypto');
 
-const base64url = require('base64url');
 
+const base64 = require("base64-arraybuffer")
 const User = require('../models/user');
-const RP_NAME = 'test.ma';
+const RP_NAME = 'WebAuthn Codelab';
 const TIMEOUT = 30 * 1000 * 60;
-const RP_ID = 'localhost'
+
 
 
 
@@ -66,7 +66,7 @@ module.exports.registration = async (req, res) => {
     }
     const options = generateRegistrationOptions({
       rpName: RP_NAME,
-      rpID: RP_ID,
+      rpID: 'example.com',
       userID: user.id,
       userName: user.username,
       timeout: TIMEOUT,
