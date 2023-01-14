@@ -1,0 +1,61 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="https://kit.fontawesome.com/a690120af5.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background: #2F1E27;
+      height: 100vh;
+
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-weight: 100;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .centered {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100px;
+      /* Need a specific value to work */
+      font-size: 130px;
+      top: 300px;
+      color: #fff;
+
+    }
+  </style>
+</head>
+
+<body>
+  <h1>fido2 and webAuthn demo </h1>
+  <i class="fa-solid can centered fa-fingerprint"></i>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
+    integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" defer
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../public/animation.js" type="module"></script>
+  <script type="module">
+    import { floatAnimation } from '/animation.js'
+    floatAnimation();
+    import { _fetch, authenticate } from '/client.js';
+    const btn = document.querySelector('.can');
+      btn.addEventListener('click', e => {
+    
+      
+    });
+  </script>
+</body>
+
+</html>

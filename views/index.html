@@ -5,26 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/main.css">
+    <script defer type="module" src="/main.js"></script>
 </head>
 <body>
     <div class="container">
         <h2>fido2 and webAuthn demo</h2>
         <h1>Come on , Join us!</h1>
         
-        <form action="" id="join-us">
+        <form action="/user/username"  id="registration_form">
           <div class="fields">
             <span>
-             <input required placeholder="username or email" type="text" />
+             <input name="username" required placeholder="username or email" type="text" />
           </span>
           <br />
            <span>
-             <input required placeholder="nickName" type="text" />
+             <input name="displayName" required placeholder="displayName" type="text" />
           </span>
           </div>
           <div class="submit">
-            <input class="submit" value="Submit" type="button" />
+            <input class="submit" value="Submit" name="submit" type="button" />
           </div>
         </form>
       </div>
+
 </body>
 </html>

@@ -6,6 +6,7 @@ const session = require ('express-session')
 const connectDB = require('./db/connect');
 const authRouter = require('./routes/auth');
 const connectMongoDBSession = require('connect-mongodb-session');
+const userRouter = require('./routes/user');
 const MongoDBStore = connectMongoDBSession(session);
 
 var sessionStore = new MongoDBStore({
@@ -27,11 +28,12 @@ app.use(session({
     sameSite: 'none'
   }
 }));
-
-// routes
 app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 app.set('views', './views');
+
+// routes
+app.use('/user',userRouter)
 app.get('/', (req, res) => {
   res.render('index.html');
 });
