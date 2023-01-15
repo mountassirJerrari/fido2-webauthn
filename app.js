@@ -21,11 +21,14 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(session({
   secret: 'secret', // You should specify a real secret here
-  resave: false,
-  saveUninitialized: true,
-  store:sessionStore,
+  resave: true,
+  saveUninitialized: false,
+  proxy: true,
+  store : sessionStore,
   cookie:{
-    maxAge : 12121212
+    httpOnly: true,
+    secure: false,
+    sameSite: 'none'
   }
 }));
 app.set('view engine', 'html');
@@ -46,7 +49,8 @@ app.get('/test',(req, res) => {
   const encoded1 = base64.encode(decoded)
   const decoded1 = base64.decode(encoded)
   console.log({origin , encoded ,decoded , encoded1 , decoded1});
-  res.json({origin , encoded ,decoded});
+  const user = req.session.user
+  res.json({user});
 });
 
 

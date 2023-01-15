@@ -1,11 +1,12 @@
-<html lang="en">
+<!DOCTYPE html>
+<html  lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <script src="https://kit.fontawesome.com/a690120af5.js" crossorigin="anonymous"></script>
   <style>
     body {
@@ -55,8 +56,9 @@
     import { _fetch, registerCredential } from '/client.js';
     const btn = document.querySelector('.can');
       btn.addEventListener('click',async e => {
-        const options = await registerCredential()
-        console.log(options);
+          const opt = await registerCredential();
+          console.log(opt);
+        
          });
   </script>
 </body>

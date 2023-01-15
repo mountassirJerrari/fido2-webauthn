@@ -31,10 +31,10 @@ export const _fetch = async (path, payload = '') => {
 // register credential
 export const registerCredential = async () => {
   const opts = {
-    attestation: 'none',
+    attestation: "none",
     authenticatorSelection: {
-      authenticatorAttachment: 'platform',
-      userVerification: 'required',
+      
+      userVerification: "preferred",
       requireResidentKey: false
     }
   };
@@ -50,12 +50,18 @@ export const registerCredential = async () => {
       cred.id = base64url.decode(cred.id);
     }
   }
-
-  const cred = await navigator.credentials.create({
+  
+  const cred = '' ; 
+try {
+   cred = await navigator.credentials.create({
     publicKey: options
   });
-  console.log(cred)
-  return cred ; 
+} catch (error) {
+  console.log(error);
+}
+  
+  
+   
 
   const credential = {};
   credential.id = cred.id;
@@ -72,8 +78,8 @@ export const registerCredential = async () => {
       attestationObject
     };
   }
-
-  localStorage.setItem(`credId`, credential.id);
+  console.log(cred);
+  //localStorage.setItem(`credId`, credential.id);
   
-  return await _fetch('/auth/registerResponse', credential);
+  //return await _fetch('/auth/registerResponse', credential);
 };

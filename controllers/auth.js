@@ -6,7 +6,7 @@ const crypto = require('crypto');
 
 const base64 = require("base64-arraybuffer")
 const User = require('../models/user');
-const RP_NAME = 'WebAuthn Codelab';
+const RP_NAME = 'localhost';
 const TIMEOUT = 30 * 1000 * 60;
 
 
@@ -66,7 +66,7 @@ module.exports.registration = async (req, res) => {
     }
     const options = generateRegistrationOptions({
       rpName: RP_NAME,
-      rpID: 'example.com',
+      
       userID: user.id,
       userName: user.username,
       timeout: TIMEOUT,
