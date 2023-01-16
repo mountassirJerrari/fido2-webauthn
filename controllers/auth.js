@@ -1,18 +1,15 @@
 
-const { generateRegistrationOptions } = require('@simplewebauthn/server');
-const session = require("express-session")
-const crypto = require('crypto');
+const { generateRegistrationOptions, verifyRegistrationResponse } = require('@simplewebauthn/server');
 
-
-const base64 = require("base64-arraybuffer")
 const User = require('../models/user');
 const RP_NAME = 'localhost';
-const TIMEOUT = 30 * 1000 * 60;
+const TIMEOUT =  1000 * 120;
+const RP_ID = 'localhost' ;
 
 
 
 
-module.exports.registration = async (req, res) => {
+module.exports.registrationReq = async (req, res) => {
 
   console.log('coming in');
     let user = await req.session.user
@@ -90,7 +87,60 @@ module.exports.registration = async (req, res) => {
     console.log(e);
     res.status(400).send({ error: e });
   }
-
-
 }
+
+module.exports.registrationRes =  async (req, res) => {
+  const username = req.session.username;
+  const expectedChallenge = req.session.challenge;
+  const expectedOrigin = 'to do';
+  const expectedRPID =RP_ID;
+  const credId = req.body.id;
+  const type = req.body.type;
+
+  try {
+    const { body } = req;
+
+    const verification = await verifyRegistrationResponse({
+      credential: body,
+      expectedChallenge,
+      expectedOrigin,
+      expectedRPID,
+    });
+
+    const { verified, authenticatorInfo } = verification;
+
+    if (!verified) {
+      throw 'User verification failed.';
+    }
+
+    const { base64PublicKey, base64CredentialID, counter } = authenticatorInfo;
+
+    const user = User.find(username);
+
+    const existingCred = user.credentials.find(
+      (cred) => cred.credID === base64CredentialID,
+    );
+
+    if (!existingCred) {
+      /**
+       * Add the returned device to the user's list of devices
+       */
+      user.credentials.push({
+        publicKey: base64PublicKey,
+        credId: base64CredentialID,
+        prevCounter: counter,
+      });
+    }
+
+    db.get('users').find({ username: username }).assign(user).write();
+
+    delete req.session.challenge;
+
+    // Respond with user info
+    res.json(user);
+  } catch (e) {
+    delete req.session.challenge;
+    res.status(400).send({ error: e.message });
+  }
+};
 

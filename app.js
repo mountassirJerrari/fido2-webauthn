@@ -1,6 +1,5 @@
 require('dotenv').config();
 const  base64 = require("base64-arraybuffer")
-const base64url =require('base64url')
 const crypto = require('crypto');
 const express = require('express');
 const app = express();
@@ -12,25 +11,49 @@ const connectMongoDBSession = require('connect-mongodb-session');
 const userRouter = require('./routes/user');
 const MongoDBStore = connectMongoDBSession(session);
 
-var sessionStore = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/pfe',
-  collection: 'sessions'
-});
+
+//creating a session store
+try {
+  var isSessionStore = true
+  var sessionStore = new MongoDBStore({
+    uri: process.env.MONGO_URl,
+    collection: 'sessions'
+  });
+} catch (error) {
+  isSessionStore = false ;
+  console.log("session will not be stored IN the DB");
+}
+
 // middleware
 app.use(express.static('public'));
 app.use(express.json());
-app.use(session({
-  secret: 'secret', // You should specify a real secret here
-  resave: true,
-  saveUninitialized: false,
-  proxy: true,
-  store : sessionStore,
-  cookie:{
-    httpOnly: true,
-    secure: false,
-    sameSite: 'none'
-  }
-}));
+if (isSessionStore) {
+  app.use(session({
+    secret: 'secret', 
+    resave: true,
+    saveUninitialized: false,
+    proxy: true,
+    store : sessionStore,
+    cookie:{
+      httpOnly: true,
+      secure: false,
+      sameSite: 'none'
+    }
+  }));
+} else {
+  app.use(session({
+    secret: 'secret', 
+    resave: true,
+    saveUninitialized: false,
+    proxy: true,
+    cookie:{
+      httpOnly: true,
+      secure: false,
+      sameSite: 'none'
+    }
+  }));
+}
+
 app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 app.set('views', './views');
@@ -41,32 +64,25 @@ app.get('/', (req, res) => {
   res.render('index.html');
 });
 app.use('/auth', authRouter);
+//testing route
 app.get('/test',(req, res) => {
 
-  const origin =crypto.randomBytes(32)
-  const encoded = base64.encode(origin)
-  const decoded = base64.decode(encoded)
-  const encoded1 = base64.encode(decoded)
-  const decoded1 = base64.decode(encoded)
-  console.log({origin , encoded ,decoded , encoded1 , decoded1});
-  const user = req.session.user
-  res.json({user});
+  const useragent =req.get('host');
+  console.log(useragent);
+  res.json(useragent);
 });
 
 
 
 
-
+// starting the server
 const port = process.env.PORT || 3000;
-
 const start = async () => {
   try {
-    // connectDB
     await connectDB(process.env.MONGO_URl);
     app.listen(port, () => console.log(`Server is listening port ${port}...`));
   } catch (error) {
     console.log(error);
   }
 };
-
 start();

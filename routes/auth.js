@@ -1,12 +1,13 @@
 const express = require('express')
-const {registration}= require ('../controllers/auth')
+const {registrationReq ,registrationRes}= require ('../controllers/auth')
 const {username} = require('../controllers/user')
 
 
 const router = express.Router()
 
 
-router.post('/registerRequest', registration)
+router.post('/registerRequest',registrationReq)
+router.post('/registerResponse',registrationRes)
 router.get('/',(req,res)=>{
     res.render('auth.html')
 })

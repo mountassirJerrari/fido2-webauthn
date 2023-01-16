@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="en">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -23,6 +23,17 @@
       margin-bottom: 10px;
     }
 
+    #message {
+      text-align: center;
+
+      color: rgb(120, 127, 224);
+      font-weight: 100;
+      font-size: 1.3em;
+      margin-bottom: 10px;
+
+
+    }
+
     .centered {
       position: absolute;
       left: 0;
@@ -43,23 +54,47 @@
 
 <body>
   <h1>fido2 and webAuthn demo </h1>
+  <h3 id="message">message</h3>
   <i class="fa-solid can centered fa-fingerprint"></i>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
     integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" defer
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- 
-  
+
+
   <script type="module">
-    import { floatAnimation } from '/animation.js'
-    floatAnimation();
+
+    import { floatAnimation } from '/animation.js' ;
     import { _fetch, registerCredential } from '/client.js';
+    floatAnimation();
+    // 
+    const message = document.querySelector('#message');
+    const isSupported = true ;
+
+    if (window.PublicKeyCredential) {
+      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+        .then(uvpaa => {
+          if (!uvpaa) {
+           message.innerHTML ='u don\'t have a platform authenticator , try registring with a key';
+          } else {
+            message.innerHTML ='give it a shot';
+          }
+        });
+    } else {
+      message.innerHTML ='the current device does not support passwordless authentication ';
+      isSupported = false ;
+    }
+
+
+    //registration process
+    if (isSupported) {
     const btn = document.querySelector('.can');
-      btn.addEventListener('click',async e => {
-          const opt = await registerCredential();
-          console.log(opt);
-        
-         });
+    btn.addEventListener('click', async e => {
+      const credential = await registerCredential();
+      console.log(credential);
+    });
+    }
+   
   </script>
 </body>
 
